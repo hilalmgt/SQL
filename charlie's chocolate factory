@@ -1,0 +1,45 @@
+CREATE DATABASE Manufacturer_2;
+use Manufacturer_2;
+Create SCHEMA Charlie_s_Choclate_Factory;
+CREATE TABLE [dbo].[Product] (
+    [product_id] INT          NOT NULL,
+    [prod_name]  VARCHAR (50) NOT NULL,
+    [column_2]   INT          NOT NULL,
+    CONSTRAINT [PK_Product] PRIMARY KEY CLUSTERED ([product_id] ASC)
+);
+
+CREATE TABLE [dbo].[Suppler] (
+    [supp_id]       INT          NOT NULL,
+    [supp_name]     VARCHAR (50) NOT NULL,
+    [supp_location] VARCHAR (50) NOT NULL,
+    [supp_country]  VARCHAR (50) NOT NULL,
+    [is_active]     BIT          NOT NULL,
+    CONSTRAINT [PK_Suppler] PRIMARY KEY CLUSTERED ([supp_id] ASC)
+);
+
+CREATE TABLE [dbo].[component] (
+    [comp_id]       INT           NOT NULL,
+    [comp_name]     VARCHAR (50)  NOT NULL,
+    [description]   NVARCHAR (50) NOT NULL,
+    [quantity_comp] INT           NOT NULL,
+    CONSTRAINT [PK_component] PRIMARY KEY CLUSTERED ([comp_id] ASC)
+);
+
+CREATE TABLE [dbo].[Prod_comp] (
+    [prod_id]      INT NOT NULL,
+    [comp_id]      INT NOT NULL,
+    [quantity_com] INT NOT NULL,
+    CONSTRAINT [PK_Prod_comp] PRIMARY KEY CLUSTERED ([prod_id] ASC, [comp_id] ASC),
+    CONSTRAINT [FK_Prod_comp_Component] FOREIGN KEY ([comp_id]) REFERENCES [dbo].[component] ([comp_id]),
+    CONSTRAINT [FK_Prod_comp_Product] FOREIGN KEY ([prod_id]) REFERENCES [dbo].[Product] ([product_id])
+);
+
+CREATE TABLE [dbo].[Comp_supp] (
+    [supp_id]    INT NOT NULL,
+    [comp_id]    INT NOT NULL,
+    [order_date] DATETIME NOT NULL,
+    [quantity]   INT NOT NULL,
+    CONSTRAINT [PK_Comp_supp] PRIMARY KEY CLUSTERED ([supp_id] ASC, [comp_id] ASC),
+    CONSTRAINT [FK_Comp_supp_Supplier] FOREIGN KEY ([supp_id]) REFERENCES [dbo].[Suppler] ([supp_id]),
+    CONSTRAINT [FK_Comp_supp_Component] FOREIGN KEY ([comp_id]) REFERENCES [dbo].[component] ([comp_id])
+);
